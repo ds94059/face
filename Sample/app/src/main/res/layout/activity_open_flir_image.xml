@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.microsoft.projectoxford.face.samples.ui.openFlirImageActivity">
+
+    <TextView
+        android:id="@+id/thermal_sdk_version_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/thermal_sdk_version" />
+
+    <Button
+        style="@style/ButtonStyle"
+        android:layout_width="102dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/view_margin"
+        android:layout_marginLeft="@dimen/view_margin"
+        android:onClick="selectImage"
+        android:text="@string/select_image" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="303dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/ir_image"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"/>
+
+        <!--        <ImageView-->
+        <!--            android:id="@+id/dc_and_ir_image"-->
+        <!--            android:layout_width="100dp"-->
+        <!--            android:layout_height="100dp"/>-->
+
+        <ImageView
+            android:id="@+id/visual_image"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/avg_value"
+                    android:text="@string/avg_value_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+        <!--        <TextView-->
+        <!--            android:id="@+id/spot_value"-->
+        <!--            android:text=""-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"/>-->
+
+        <!--        <TextView-->
+        <!--            android:id="@+id/min_textview"-->
+        <!--            android:text=""-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"/>-->
+        <!--        <TextView-->
+        <!--            android:id="@+id/avg_textview"-->
+        <!--            android:text=""-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"/>-->
+        <!--        <TextView-->
+        <!--            android:id="@+id/max_textview"-->
+        <!--            android:text=""-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"/>-->
+
+        <Button
+            style="@style/ButtonStyle"
+            android:layout_width="113dp"
+            android:layout_height="match_parent"
+            android:layout_gravity=""
+            android:layout_marginStart="@dimen/view_margin"
+            android:layout_marginLeft="@dimen/view_margin"
+            android:layout_weight="1"
+            android:onClick="identification"
+            android:text="@string/identification" />
+
+    </LinearLayout>
+
+
+
+</LinearLayout>
