@@ -19,7 +19,8 @@ android {
     repositories {
         // default path where thermalsdk AAR is stored
         flatDir dirs: '../../../modules/thermalsdk/build/outputs/aar'
-        flatDir dirs: 'C:/Users/cgal/Downloads/flir_sample_code/thermal-sdk-android-java-1.2.0'
+        // thermalSDK location
+        flatDir dirs: '../thermal-sdk-android-java-1.2.0'
         // default path where androidsdk AAR is stored
         flatDir dirs: '../../../modules/androidsdk/build/outputs/aar'
         // superproject path where all required AARs are stored (for local debug builds only)
