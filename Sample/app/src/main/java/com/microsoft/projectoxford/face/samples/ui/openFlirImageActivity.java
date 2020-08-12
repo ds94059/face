@@ -406,8 +406,8 @@ public class openFlirImageActivity extends AppCompatActivity {
                     dir.mkdir();
                 }
 
-                //String tmp = "/sdcard/demo/takepicture.jpg";
-                String tmp = directory+ "takepicture.jpg";
+                String tmp = "/sdcard/demo/takepicture.jpg";
+                //String tmp = directory+ "takepicture.jpg";
                 fOut = new FileOutputStream(tmp);
                 myBitmap.compress(Bitmap.CompressFormat.JPEG, 100, fOut);
 
