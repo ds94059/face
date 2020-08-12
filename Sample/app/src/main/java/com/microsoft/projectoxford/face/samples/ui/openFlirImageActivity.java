@@ -14,10 +14,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.flir.thermalsdk.androidsdk.BuildConfig;
@@ -60,6 +62,7 @@ import android.widget.ImageView;
 import com.google.android.gms.vision.Frame;
 import com.google.android.gms.vision.face.Face;
 import com.google.android.gms.vision.face.FaceDetector;
+import com.microsoft.projectoxford.face.samples.helper.ImageHelper;
 
 /**
  * This is a sample application on how to use the FLIR Thermal SDK
@@ -114,16 +117,88 @@ public class openFlirImageActivity extends AppCompatActivity {
         super.onResume();
 
         ThermalImageFile thermalImageFile = openIncludedImage();
-        showFusionModes(thermalImageFile, irImageView, visualImageView);
-        showImageData(thermalImageFile,avgImageStateValue);
+        //showFusionModes(thermalImageFile, irImageView, visualImageView);
+        //showImageData(thermalImageFile,avgImageStateValue);
     }
+
 
     // Flag to indicate which task is to be performed.
     private static final int REQUEST_SELECT_IMAGE = 0;
+
     // Called when the "Select Image" button is clicked.
     public void selectImage(View view) {
         Intent intent = new Intent(this, SelectImageActivity.class);
         startActivityForResult(intent, REQUEST_SELECT_IMAGE);
+    }
+
+    // The image selected to detect.
+    private Bitmap mBitmap;
+
+    // Called when image selection is done.
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode)
+        {
+            case REQUEST_SELECT_IMAGE:
+                if(resultCode == RESULT_OK) {
+
+                    // If image is selected successfully, set the image URI and bitmap.
+                    Uri imageUri = data.getData();
+                    mBitmap = ImageHelper.loadSizeLimitedBitmapFromUri(
+                            imageUri, getContentResolver());
+                    if (mBitmap != null) {
+                        // Show the image on screen.
+                       // ImageView imageView = (ImageView) findViewById(R.id.image);
+                        irImageView.setImageBitmap(mBitmap);
+                    }
+
+                    byte[] data2 = new byte[2000];
+
+                    try (
+                            FileOutputStream outputStream = openFileOutput(IMAGE_NAME, Context.MODE_PRIVATE);
+                            InputStream inputStream = getContentResolver().openInputStream(imageUri);
+                    ) {
+                        int result = 0;
+                        while ((result = inputStream.read(data2)) > 0) {
+                            outputStream.write(data2);
+                            outputStream.flush();
+                        }
+                    } catch (IOException e) {
+                        ThermalLog.e(TAG, "failed to copy FLIR image to disk, exception:" + e);
+                    }
+
+
+                    File directory = getFilesDir();
+                    File file = new File(directory, IMAGE_NAME);
+                    String absoluteFilePath = file.getAbsolutePath();
+
+                    //use the path and open a Thermal image
+                    ThermalImageFile thermalImageFile = null;
+                    try {
+                        thermalImageFile = (ThermalImageFile) ImageFactory.createImage(absoluteFilePath);
+                    } catch (IOException e) {
+                        ThermalLog.e(TAG, "failed to open IR file, exception:" + e);
+                    }
+
+                    toIrAndPhoto(thermalImageFile,irImageView,visualImageView);
+                    showImageData(thermalImageFile,avgImageStateValue);
+
+
+//                    // Clear the identification result.
+//                    IdentificationActivity.FaceListAdapter faceListAdapter = new IdentificationActivity.FaceListAdapter(null);
+//                    ListView listView = (ListView) findViewById(R.id.list_identified_faces);
+//                    listView.setAdapter(faceListAdapter);
+//
+//                    // Clear the information panel.
+//                    setInfo("");
+//
+//                    // Start detecting in image.
+//                    detect(mBitmap);
+                }
+                break;
+            default:
+                break;
+        }
     }
 
     private void showImageData(ThermalImageFile thermalImageFile, TextView avgImage) {
@@ -193,7 +268,7 @@ public class openFlirImageActivity extends AppCompatActivity {
             BitmapAndroid irBitmap = BitmapAndroid.createBitmap(irImage);
 
             //Set the ImageView with the IR bitmap
-            irImageView.setImageBitmap(irBitmap.getBitMap());
+            //irImageView.setImageBitmap(irBitmap.getBitMap());
         }
         {
             //** Get the mixed Visual and IR image
@@ -289,6 +364,104 @@ public class openFlirImageActivity extends AppCompatActivity {
         }
     }
 
+    private void toIrAndPhoto(ThermalImageFile thermalImageFile, ImageView irImageView, ImageView visualImageView) {
+
+        {
+            //** Get the IR image data from the image
+            //First we need to se the correct Fusion mode in the ThermalImageFile
+            thermalImageFile.getFusion().setFusionMode(FusionMode.THERMAL_ONLY);
+            ThermalLog.d(TAG, "current image width:" + thermalImageFile.getWidth() + " height:" + thermalImageFile.getHeight());
+
+            //Make a deep copy of the actual Image pixels
+            JavaImageBuffer irImage = thermalImageFile.getImage();
+            ThermalLog.d(TAG, "current IR image width:" + irImage.width + " height:" + irImage.height);
+
+            //Convert the pixel into a Android bitmap
+            BitmapAndroid irBitmap = BitmapAndroid.createBitmap(irImage);
+
+            //Set the ImageView with the IR bitmap
+            irImageView.setImageBitmap(irBitmap.getBitMap());
+        }
+        {
+            //** Get the Visual image, the visual image can be bigger then the IR and MSX image
+            //First we need to se the correct Fusion mode in the ThermalImageFile known as MSX
+            thermalImageFile.getFusion().setFusionMode(FusionMode.VISUAL_ONLY); //The visual image might also be known as DC image
+            ThermalLog.d(TAG, "current image width:" + thermalImageFile.getWidth() + " height:" + thermalImageFile.getHeight());
+
+            //Make a deep copy of the actual Image pixels
+            JavaImageBuffer photo = thermalImageFile.getImage();
+            ThermalLog.d(TAG, "current photo image width:" + photo.width + " height:" + photo.height);
+
+            //Convert the pixel into a Android bitmap
+            BitmapAndroid photoBitmap = BitmapAndroid.createBitmap(photo);
+
+
+            Bitmap myBitmap=photoBitmap.getBitMap();
+
+            FileOutputStream fOut;
+            try {
+                File directory = getFilesDir();
+                File dir = new File(directory,"takePicture.jpg");
+                if (!dir.exists()) {
+                    dir.mkdir();
+                }
+
+                //String tmp = "/sdcard/demo/takepicture.jpg";
+                String tmp = directory+ "takepicture.jpg";
+                fOut = new FileOutputStream(tmp);
+                myBitmap.compress(Bitmap.CompressFormat.JPEG, 100, fOut);
+
+                try {
+                    fOut.flush();
+                    fOut.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+
+//            // Set the ImageView with the
+//            visualImageView.setImageBitmap(photoBitmap.getBitMap());
+
+            // Create a Paint object for drawing with
+            Paint myRectPaint = new Paint();
+            myRectPaint.setStrokeWidth(5);
+            myRectPaint.setColor(Color.RED);
+            myRectPaint.setStyle(Paint.Style.STROKE);
+
+            // Create a Canvas object for drawing on
+            Bitmap tempBitmap = Bitmap.createBitmap(myBitmap.getWidth(), myBitmap.getHeight(), Bitmap.Config.RGB_565);
+            Canvas tempCanvas = new Canvas(tempBitmap);
+            tempCanvas.drawBitmap(myBitmap, 0, 0, null);
+
+            // Create the Face Detector
+            FaceDetector faceDetector = new
+                    FaceDetector.Builder(getApplicationContext()).setTrackingEnabled(false)
+                    .build();
+            if(!faceDetector.isOperational()){
+                //new AlertDialog.Builder(v.getContext()).setMessage("Could not set up the face detector!").show();
+                return;
+            }
+
+            // Detect the Faces
+            Frame frame = new Frame.Builder().setBitmap(myBitmap).build();
+            SparseArray<Face> faces = faceDetector.detect(frame);
+
+            // Draw Rectangles on the Faces
+            for(int i=0; i<faces.size(); i++) {
+                Face thisFace = faces.valueAt(i);
+                x1 = thisFace.getPosition().x;
+                y1 = thisFace.getPosition().y;
+                bouunding_width = x1 + thisFace.getWidth();
+                bouunding_height = y1 + thisFace.getHeight();
+                tempCanvas.drawRoundRect(new RectF(x1, y1, bouunding_width, bouunding_height), 2, 2, myRectPaint);
+            }
+            visualImageView.setImageDrawable(new BitmapDrawable(getResources(),tempBitmap));
+        }
+    }
+
     /**
      * Open the included FLIR image file
      *
@@ -320,7 +493,7 @@ public class openFlirImageActivity extends AppCompatActivity {
 
         try (
                 FileOutputStream outputStream = openFileOutput(IMAGE_NAME, Context.MODE_PRIVATE);
-                InputStream inputStream = getResources().openRawResource(R.raw.ir_10);
+                InputStream inputStream = getResources().openRawResource(R.raw.ir_7);
         ) {
             int result = 0;
             while ((result = inputStream.read(data)) > 0) {

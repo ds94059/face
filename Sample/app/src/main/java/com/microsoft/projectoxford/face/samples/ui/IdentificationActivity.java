@@ -448,7 +448,7 @@ public class IdentificationActivity extends AppCompatActivity {
     }
 
     // The adapter of the GridView which contains the details of the detected faces.
-    private class FaceListAdapter extends BaseAdapter {
+    class FaceListAdapter extends BaseAdapter {
         // The detected faces.
         List<Face> faces;
 
