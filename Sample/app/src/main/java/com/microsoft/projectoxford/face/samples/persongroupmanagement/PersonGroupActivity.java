@@ -333,6 +333,7 @@ public class PersonGroupActivity extends AppCompatActivity {
 
             @Override
             public void onDestroyActionMode(ActionMode mode) {
+                deleteSelectedItems();
                 personGridViewAdapter.longPressed = false;
 
                 for (int i = 0; i < personGridViewAdapter.personChecked.size(); ++i) {

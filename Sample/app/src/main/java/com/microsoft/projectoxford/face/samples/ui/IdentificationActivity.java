@@ -32,6 +32,7 @@
 //
 package com.microsoft.projectoxford.face.samples.ui;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -39,8 +40,13 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -69,12 +75,13 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.DecimalFormat;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
-
+import java.time.LocalTime;
 
 public class IdentificationActivity extends AppCompatActivity {
 
@@ -86,6 +93,7 @@ public class IdentificationActivity extends AppCompatActivity {
             this.mPersonGroupId = personGroupId;
         }
 
+        @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
         protected IdentifyResult[] doInBackground(UUID... params) {
             String logString = "Request: Identifying faces ";
@@ -109,6 +117,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 }
 
                 publishProgress("Identifying...");
+
 
                 // Start identification.
                 return faceServiceClient.identityInLargePersonGroup(
@@ -134,10 +143,16 @@ public class IdentificationActivity extends AppCompatActivity {
             setUiDuringBackgroundTask(values[0]);
         }
 
+        @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
         protected void onPostExecute(IdentifyResult[] result) {
             // Show the result on screen when detection is done.
             setUiAfterIdentification(result, mSucceed);
+            Log.d("response time after",java.time.LocalTime.now().toString());
+            AlertDialog.Builder dialog = new AlertDialog.Builder(IdentificationActivity.this);
+            dialog.setTitle("After");
+            dialog.setMessage(java.time.LocalTime.now().toString());
+            dialog.show();
         }
     }
 
@@ -320,6 +335,7 @@ public class IdentificationActivity extends AppCompatActivity {
     ProgressDialog progressDialog;
 
     // Called when image selection is done.
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode)
@@ -375,7 +391,14 @@ public class IdentificationActivity extends AppCompatActivity {
     }
 
     // Called when the "Detect" button is clicked.
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public void identify(View view) {
+        Log.d("response time before",java.time.LocalTime.now().toString());
+        AlertDialog.Builder dialog = new AlertDialog.Builder(IdentificationActivity.this);
+        dialog.setTitle("Before");
+        dialog.setMessage(java.time.LocalTime.now().toString());
+        dialog.show();
+
         // Start detection task only if the image to detect is selected.
         if (detected && mPersonGroupId != null) {
             // Start a background task to identify faces in the image.

@@ -2,7 +2,6 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 28
-
     defaultConfig {
         applicationId "com.microsoft.projectoxford.faceapisample"
         minSdkVersion 22
@@ -56,5 +55,7 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
 
     implementation 'com.google.android.gms:play-services:7.8+'
+
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.2.0'
 
 }

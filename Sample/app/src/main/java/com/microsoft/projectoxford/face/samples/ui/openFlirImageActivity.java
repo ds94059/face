@@ -320,7 +320,7 @@ public class openFlirImageActivity extends AppCompatActivity {
 
         try (
                 FileOutputStream outputStream = openFileOutput(IMAGE_NAME, Context.MODE_PRIVATE);
-                InputStream inputStream = getResources().openRawResource(R.raw.ir_10);
+                InputStream inputStream = getResources().openRawResource(R.raw.ir_6);
         ) {
             int result = 0;
             while ((result = inputStream.read(data)) > 0) {

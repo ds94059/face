@@ -273,6 +273,7 @@ public class PersonActivity extends AppCompatActivity {
 
             @Override
             public void onDestroyActionMode(ActionMode mode) {
+                deleteSelectedItems();
                 faceGridViewAdapter.longPressed = false;
 
                 for (int i = 0; i < faceGridViewAdapter.faceChecked.size(); ++i) {
