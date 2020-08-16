@@ -187,7 +187,7 @@
         </activity>
         <activity
             android:name=".ui.openFlirImageActivity"
-            android:label="open0FlirImage"
+            android:label="正能人臉辨識Beta"
             android:parentActivityName=".ui.openFlirImageActivity"
             android:screenOrientation="portrait" />
     </application>

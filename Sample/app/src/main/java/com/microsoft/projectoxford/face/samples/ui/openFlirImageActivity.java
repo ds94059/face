@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.PointF;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -193,7 +194,7 @@ public class openFlirImageActivity extends AppCompatActivity {
         protected void onPostExecute(IdentifyResult[] result) {
             // Show the result on screen when detection is done.
             setUiAfterIdentification(result, mSucceed);
-            Log.d("response time after",java.time.LocalTime.now().toString());
+            //Log.d("response time after",java.time.LocalTime.now().toString());
         }
     }
     String mPersonGroupId;
@@ -385,6 +386,7 @@ public class openFlirImageActivity extends AppCompatActivity {
             }
 
             //refreshIdentifyButtonEnabledStatus();
+            identify();
         }
     }
 
@@ -414,6 +416,11 @@ public class openFlirImageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_open_flir_image);
 
+        //initialize the personGroup
+        ListView listView = (ListView) findViewById(R.id.list_person_groups_identify);
+        mPersonGroupListAdapter = new openFlirImageActivity.PersonGroupListAdapter();
+        listView.setAdapter(mPersonGroupListAdapter);
+
         ThermalLog.LogLevel enableLoggingInDebug = BuildConfig.DEBUG ? ThermalLog.LogLevel.DEBUG : ThermalLog.LogLevel.NONE;
         //ThermalSdkAndroid.init(..) has to be initiated from an Activity and before using ANY functionality from the FLIR Thermal SDK
         ThermalSdkAndroid.init(getApplicationContext(), enableLoggingInDebug);
@@ -433,8 +440,8 @@ public class openFlirImageActivity extends AppCompatActivity {
         super.onResume();
 
         ListView listView = (ListView) findViewById(R.id.list_person_groups_identify);
-        mPersonGroupListAdapter = new openFlirImageActivity.PersonGroupListAdapter();
-        listView.setAdapter(mPersonGroupListAdapter);
+        //mPersonGroupListAdapter = new openFlirImageActivity.PersonGroupListAdapter();
+        //listView.setAdapter(mPersonGroupListAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -482,6 +489,7 @@ public class openFlirImageActivity extends AppCompatActivity {
             //textView.setTextColor(Color.BLACK);
             //textView.setText(String.format("Person group to use: %s", personGroupName));
         }
+        //identify();
     }
 
 
@@ -530,7 +538,6 @@ public class openFlirImageActivity extends AppCompatActivity {
                         ThermalLog.e(TAG, "failed to copy FLIR image to disk, exception:" + e);
                     }
 
-
                     File directory = getFilesDir();
                     File file = new File(directory, IMAGE_NAME);
                     String absoluteFilePath = file.getAbsolutePath();
@@ -547,6 +554,8 @@ public class openFlirImageActivity extends AppCompatActivity {
                     showImageData(thermalImageFile,avgImageStateValue);
 
 
+
+
                     // Clear the identification result.
                     openFlirImageActivity.FaceListAdapter faceListAdapter = new openFlirImageActivity.FaceListAdapter(null);
                     ListView listView = (ListView) findViewById(R.id.list_identified_faces);
@@ -561,6 +570,7 @@ public class openFlirImageActivity extends AppCompatActivity {
                     mBitmap = ImageHelper.loadSizeLimitedBitmapFromUri(
                             imageUri2, getContentResolver());
 
+                    avgImageStateValue.setText("");
                     detect(mBitmap);
                 }
                 break;
@@ -889,25 +899,30 @@ public class openFlirImageActivity extends AppCompatActivity {
     }
 
     // Called when the "Detect" button is clicked.
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    public void identify(View view) {
-        Log.d("response time before",java.time.LocalTime.now().toString());
+    //@RequiresApi(api = Build.VERSION_CODES.O)
+    public void identify() {
+       // Log.d("response time before",java.time.LocalTime.now().toString());
 
-        // Start detection task only if the image to detect is selected.
-        if (detected && mPersonGroupId != null) {
-            // Start a background task to identify faces in the image.
-            List<UUID> faceIds = new ArrayList<>();
-            for (Face face:  mFaceListAdapter.faces) {
-                faceIds.add(face.faceId);
+        if(alive_text=="不是活人")
+            avgImageStateValue.setText("Error");
+        else
+        {
+            // Start detection task only if the image to detect is selected.
+            if (detected && mPersonGroupId != null) {
+                // Start a background task to identify faces in the image.
+                List<UUID> faceIds = new ArrayList<>();
+                for (Face face:  mFaceListAdapter.faces) {
+                    faceIds.add(face.faceId);
+                }
+
+                //setAllButtonsEnabledStatus(false);
+
+                new openFlirImageActivity.IdentificationTask(mPersonGroupId).execute(
+                        faceIds.toArray(new UUID[faceIds.size()]));
+            } else {
+                // Not detected or person group exists.
+                //setInfo("Please select an image and create a person group first.");
             }
-
-            //setAllButtonsEnabledStatus(false);
-
-            new openFlirImageActivity.IdentificationTask(mPersonGroupId).execute(
-                    faceIds.toArray(new UUID[faceIds.size()]));
-        } else {
-            // Not detected or person group exists.
-            //setInfo("Please select an image and create a person group first.");
         }
     }
 
