@@ -66,12 +66,10 @@ public class faceDetectionActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_image);
+
         File directory = getFilesDir();
-        //File file = new File(directory, "flir_ir_image.jpg");
-        File file=new File("/sdcard/demo/takepicture.jpg");
-
+        File file = new File(directory, "demo/takepicture.jpg");
         Uri imageUri= Uri.fromFile(file);
-
         Intent intent = new Intent();
         intent.setData(imageUri);
         setResult(RESULT_OK, intent);

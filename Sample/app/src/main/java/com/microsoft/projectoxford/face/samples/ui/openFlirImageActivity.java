@@ -394,21 +394,17 @@ public class openFlirImageActivity extends AppCompatActivity {
 
             //Convert the pixel into a Android bitmap
             BitmapAndroid photoBitmap = BitmapAndroid.createBitmap(photo);
-
-
-            Bitmap myBitmap=photoBitmap.getBitMap();
+            Bitmap myBitmap = photoBitmap.getBitMap();
 
             FileOutputStream fOut;
             try {
                 File directory = getFilesDir();
-                File dir = new File(directory,"takePicture.jpg");
+                File dir = new File(directory,"demo");
                 if (!dir.exists()) {
                     dir.mkdir();
                 }
 
-                String tmp = "/sdcard/demo/takepicture.jpg";
-                //String tmp = directory+ "takepicture.jpg";
-                fOut = new FileOutputStream(tmp);
+                fOut = new FileOutputStream(dir.getAbsolutePath() + "/takepicture.jpg");
                 myBitmap.compress(Bitmap.CompressFormat.JPEG, 100, fOut);
 
                 try {
@@ -421,9 +417,6 @@ public class openFlirImageActivity extends AppCompatActivity {
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
-
-//            // Set the ImageView with the
-//            visualImageView.setImageBitmap(photoBitmap.getBitMap());
 
             // Create a Paint object for drawing with
             Paint myRectPaint = new Paint();

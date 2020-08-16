@@ -39,8 +39,13 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -134,10 +139,12 @@ public class IdentificationActivity extends AppCompatActivity {
             setUiDuringBackgroundTask(values[0]);
         }
 
+        @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
         protected void onPostExecute(IdentifyResult[] result) {
             // Show the result on screen when detection is done.
             setUiAfterIdentification(result, mSucceed);
+            Log.d("response time after",java.time.LocalTime.now().toString());
         }
     }
 
@@ -375,7 +382,9 @@ public class IdentificationActivity extends AppCompatActivity {
     }
 
     // Called when the "Detect" button is clicked.
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public void identify(View view) {
+        Log.d("response time before",java.time.LocalTime.now().toString());
         // Start detection task only if the image to detect is selected.
         if (detected && mPersonGroupId != null) {
             // Start a background task to identify faces in the image.
