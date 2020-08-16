@@ -76,77 +76,77 @@ public class faceDetectionActivity extends AppCompatActivity {
         finish();
     }
 
-    // Save the activity state when it's going to stop.
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putParcelable("ImageUri", mUriPhotoTaken);
-    }
-
-    // Recover the saved state when the activity is recreated.
-    @Override
-    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        mUriPhotoTaken = savedInstanceState.getParcelable("ImageUri");
-    }
-
-    // Deal with the result of selection of the photos and faces.
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (requestCode)
-        {
-            case REQUEST_TAKE_PHOTO:
-            case REQUEST_SELECT_IMAGE_IN_ALBUM:
-                if (resultCode == RESULT_OK) {
-                    Uri imageUri;
-                    if (data == null || data.getData() == null) {
-                        imageUri = mUriPhotoTaken;
-                    } else {
-                        imageUri = data.getData();
-                    }
-                    Intent intent = new Intent();
-                    intent.setData(imageUri);
-                    setResult(RESULT_OK, intent);
-                    finish();
-                }
-                break;
-            case 100:
-                Log.d("debug","YEAH");
-                break;
-            default:
-                break;
-        }
-    }
-
-    // When the button of "Take a Photo with Camera" is pressed.
-    public void takePhoto(View view) {
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if(intent.resolveActivity(getPackageManager()) != null) {
-            // Save the photo taken to a temporary file.
-            File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-            try {
-                File file = File.createTempFile("IMG_", ".jpg", storageDir);
-                mUriPhotoTaken = Uri.fromFile(file);
-                intent.putExtra(MediaStore.EXTRA_OUTPUT, mUriPhotoTaken);
-                startActivityForResult(intent, REQUEST_TAKE_PHOTO);
-            } catch (IOException e) {
-                setInfo(e.getMessage());
-            }
-        }
-    }
-
-    // When the button of "Select a Photo in Album" is pressed.
-    public void selectImageInAlbum(View view) {
-        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        intent.setType("image/*");
-        if (intent.resolveActivity(getPackageManager()) != null) {
-            startActivityForResult(intent, REQUEST_SELECT_IMAGE_IN_ALBUM);
-        }
-    }
-
-    // Set the information panel on screen.
-    private void setInfo(String info) {
-        TextView textView = (TextView) findViewById(R.id.info);
-        textView.setText(info);
-    }
+//    // Save the activity state when it's going to stop.
+//    @Override
+//    protected void onSaveInstanceState(Bundle outState) {
+//        super.onSaveInstanceState(outState);
+//        outState.putParcelable("ImageUri", mUriPhotoTaken);
+//    }
+//
+//    // Recover the saved state when the activity is recreated.
+//    @Override
+//    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+//        super.onRestoreInstanceState(savedInstanceState);
+//        mUriPhotoTaken = savedInstanceState.getParcelable("ImageUri");
+//    }
+//
+//    // Deal with the result of selection of the photos and faces.
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        switch (requestCode)
+//        {
+//            case REQUEST_TAKE_PHOTO:
+//            case REQUEST_SELECT_IMAGE_IN_ALBUM:
+//                if (resultCode == RESULT_OK) {
+//                    Uri imageUri;
+//                    if (data == null || data.getData() == null) {
+//                        imageUri = mUriPhotoTaken;
+//                    } else {
+//                        imageUri = data.getData();
+//                    }
+//                    Intent intent = new Intent();
+//                    intent.setData(imageUri);
+//                    setResult(RESULT_OK, intent);
+//                    finish();
+//                }
+//                break;
+//            case 100:
+//                Log.d("debug","YEAH");
+//                break;
+//            default:
+//                break;
+//        }
+//    }
+//
+//    // When the button of "Take a Photo with Camera" is pressed.
+//    public void takePhoto(View view) {
+//        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//        if(intent.resolveActivity(getPackageManager()) != null) {
+//            // Save the photo taken to a temporary file.
+//            File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+//            try {
+//                File file = File.createTempFile("IMG_", ".jpg", storageDir);
+//                mUriPhotoTaken = Uri.fromFile(file);
+//                intent.putExtra(MediaStore.EXTRA_OUTPUT, mUriPhotoTaken);
+//                startActivityForResult(intent, REQUEST_TAKE_PHOTO);
+//            } catch (IOException e) {
+//                setInfo(e.getMessage());
+//            }
+//        }
+//    }
+//
+//    // When the button of "Select a Photo in Album" is pressed.
+//    public void selectImageInAlbum(View view) {
+//        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+//        intent.setType("image/*");
+//        if (intent.resolveActivity(getPackageManager()) != null) {
+//            startActivityForResult(intent, REQUEST_SELECT_IMAGE_IN_ALBUM);
+//        }
+//    }
+//
+//    // Set the information panel on screen.
+//    private void setInfo(String info) {
+//        TextView textView = (TextView) findViewById(R.id.info);
+//        textView.setText(info);
+//    }
 }

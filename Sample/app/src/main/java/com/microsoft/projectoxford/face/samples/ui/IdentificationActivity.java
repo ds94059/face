@@ -119,7 +119,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 return faceServiceClient.identityInLargePersonGroup(
                         this.mPersonGroupId,   /* personGroupId */
                         params,                  /* faceIds */
-                        1);  /* maxNumOfCandidatesReturned */
+                        1);  /* maxNumOfCandidatesUnknownReturned */
             }  catch (Exception e) {
                 mSucceed = false;
                 publishProgress(e.getMessage());
@@ -385,6 +385,7 @@ public class IdentificationActivity extends AppCompatActivity {
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void identify(View view) {
         Log.d("response time before",java.time.LocalTime.now().toString());
+
         // Start detection task only if the image to detect is selected.
         if (detected && mPersonGroupId != null) {
             // Start a background task to identify faces in the image.

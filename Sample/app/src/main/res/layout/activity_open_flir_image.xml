@@ -6,26 +6,55 @@
     android:orientation="vertical"
     tools:context="com.microsoft.projectoxford.face.samples.ui.openFlirImageActivity">
 
-    <TextView
-        android:id="@+id/thermal_sdk_version_text_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/thermal_sdk_version" />
+<!--    <TextView-->
+<!--        android:id="@+id/thermal_sdk_version_text_view"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="@string/thermal_sdk_version" />-->
 
-    <Button
-        android:id="@+id/select_image"
-        style="@style/ButtonStyle"
-        android:layout_width="114dp"
+    <LinearLayout
+        android:id="@id/button_bar"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:layout_centerVertical="true"
-        android:onClick="selectImage"
-        android:text="@string/select_image" />
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/select_image"
+            style="@style/ButtonStyle"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="@dimen/view_margin"
+            android:layout_marginRight="@dimen/view_margin"
+            android:layout_weight="1"
+            android:onClick="selectImage"
+            android:text="@string/select_image" />
+
+        <Button
+            android:id="@+id/manage_person_groups"
+            style="@style/ButtonStyle"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="@dimen/view_margin"
+            android:layout_marginRight="@dimen/view_margin"
+            android:layout_weight="1"
+            android:onClick="managePersonGroups"
+            android:text="@string/manage_person_groups" />
+
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/list_person_groups_identify"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.4"
+        android:background="#E0E0E0"
+        android:verticalSpacing="@dimen/view_margin" />
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="347dp"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:orientation="horizontal">
 
         <!--        <ImageView-->
@@ -55,14 +84,21 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="0.15"
         android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/avg_value"
-                    android:text="@string/avg_value_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/avg_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textSize="30dp"
+            android:layout_gravity="center"
+            style="@style/TextAppearance.AppCompat.Title"
+            />
+
+
         <!--        <TextView-->
         <!--            android:id="@+id/spot_value"-->
         <!--            android:text=""-->
@@ -85,18 +121,44 @@
         <!--            android:layout_width="wrap_content"-->
         <!--            android:layout_height="wrap_content"/>-->
 
-        <Button
-            style="@style/ButtonStyle"
-            android:layout_width="113dp"
-            android:layout_height="match_parent"
-            android:layout_gravity=""
-            android:layout_marginStart="@dimen/view_margin"
-            android:layout_marginLeft="@dimen/view_margin"
-            android:layout_weight="1"
-            android:onClick="identification"
-            android:text="@string/identification" />
+        <!--        <Button-->
+        <!--            style="@style/ButtonStyle"-->
+        <!--            android:layout_width="113dp"-->
+        <!--            android:layout_height="match_parent"-->
+        <!--            android:layout_gravity=""-->
+        <!--            android:layout_marginStart="@dimen/view_margin"-->
+        <!--            android:layout_marginLeft="@dimen/view_margin"-->
+        <!--            android:layout_weight="1"-->
+        <!--            android:onClick="detect"-->
+        <!--            android:text="@string/identification" />-->
+
 
     </LinearLayout>
+    <LinearLayout
+        android:id="@id/button_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/identify"
+            style="@style/ButtonStyle"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="@dimen/view_margin"
+            android:layout_marginRight="@dimen/view_margin"
+            android:layout_weight="0.64"
+            android:onClick="identify"
+            android:text="@string/identify" />
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/list_identified_faces"
+        android:layout_width="0.00001dp"
+        android:layout_height="0.000001dp"
+        android:background="#E0E0E0"
+        android:verticalSpacing="@dimen/view_margin" />
 
 
 

@@ -161,6 +161,7 @@
             android:onClick="identify"
             android:text="@string/identify" />
 
+
         <Button
             android:id="@id/view_log"
             android:layout_width="0dp"
