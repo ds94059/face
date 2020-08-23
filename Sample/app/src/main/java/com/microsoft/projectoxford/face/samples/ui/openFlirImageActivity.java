@@ -204,7 +204,6 @@ public class openFlirImageActivity extends AppCompatActivity {
     // Show the result on screen when detection is done.
     private void setUiAfterIdentification(IdentifyResult[] result, boolean succeed) {
         //progressDialog.dismiss();
-
         //setAllButtonsEnabledStatus(true);
         //setIdentifyButtonEnabledStatus(false);
 
@@ -584,7 +583,7 @@ public class openFlirImageActivity extends AppCompatActivity {
         //Get the first spot found
 
         //thermalImageFile.getMeasurements().addSpot(100,100);
-        thermalImageFile.getMeasurements().addRectangle((int)(x1/2.645833),(int)(y1/2.645833),(int)(bouunding_width/2.645833),(int)(bouunding_height/2.645833));
+        thermalImageFile.getMeasurements().addRectangle((int)((x1+bouunding_width/3)/2.645833),(int)((y1+bouunding_height-bouunding_height/3)/2.645833),(int)(bouunding_width/3/2.645833),(int)(bouunding_height/3/2.645833));
 
         ThermalValue avgValue;
         avgValue = thermalImageFile.getMeasurements().getRectangles().get(0).getAverage().asCelsius();
@@ -796,11 +795,17 @@ public class openFlirImageActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
 
-            // Create a Paint object for drawing with
-            Paint myRectPaint = new Paint();
-            myRectPaint.setStrokeWidth(5);
-            myRectPaint.setColor(Color.RED);
-            myRectPaint.setStyle(Paint.Style.STROKE);
+            // Create a Paint object for drawing with face
+            Paint faceRect = new Paint();
+            faceRect.setStrokeWidth(5);
+            faceRect.setColor(Color.RED);
+            faceRect.setStyle(Paint.Style.STROKE);
+
+            // Create a Paint object for drawing with face
+            Paint noseMouseRect = new Paint();
+            noseMouseRect.setStrokeWidth(5);
+            noseMouseRect.setColor(Color.YELLOW);
+            noseMouseRect.setStyle(Paint.Style.STROKE);
 
             // Create a Canvas object for drawing on
             Bitmap tempBitmap = Bitmap.createBitmap(myBitmap.getWidth(), myBitmap.getHeight(), Bitmap.Config.RGB_565);
@@ -825,9 +830,10 @@ public class openFlirImageActivity extends AppCompatActivity {
                 com.google.android.gms.vision.face.Face thisFace = faces.valueAt(i);
                 x1 = thisFace.getPosition().x;
                 y1 = thisFace.getPosition().y;
-                bouunding_width = x1 + thisFace.getWidth();
-                bouunding_height = y1 + thisFace.getHeight();
-                tempCanvas.drawRoundRect(new RectF(x1, y1, bouunding_width, bouunding_height), 2, 2, myRectPaint);
+                bouunding_width =  thisFace.getWidth();
+                bouunding_height =  thisFace.getHeight();
+                tempCanvas.drawRoundRect(new RectF(x1, y1, x1+bouunding_width, y1+bouunding_height), 2, 2, faceRect);
+                tempCanvas.drawRoundRect(new RectF(x1+bouunding_width/3, y1+bouunding_height-bouunding_height/3, x1+bouunding_width-bouunding_width/3, y1+bouunding_height), 2, 2, noseMouseRect);
             }
             visualImageView.setImageDrawable(new BitmapDrawable(getResources(),tempBitmap));
         }
