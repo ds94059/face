@@ -180,6 +180,7 @@ public class PersonGroupListActivity extends AppCompatActivity {
 
             @Override
             public void onDestroyActionMode(ActionMode mode) {
+                deleteSelectedItems();
                 personGroupsListAdapter.longPressed = false;
 
                 for (int i = 0; i < personGroupsListAdapter.personGroupChecked.size(); ++i) {
