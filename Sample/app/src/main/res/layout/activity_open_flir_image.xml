@@ -49,6 +49,16 @@
             android:layout_weight="1"
             android:onClick="managePersonGroups"
             android:text="@string/manage_person_groups" />
+        <Button
+            android:id="@+id/getJson"
+            style="@style/ButtonStyle"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="@dimen/view_margin"
+            android:layout_marginRight="@dimen/view_margin"
+            android:layout_weight="1"
+            android:onClick="getJson"
+            android:text="Get Json" />
 
     </LinearLayout>
 

@@ -40,7 +40,10 @@ import com.flir.thermalsdk.log.ThermalLog;
 import com.microsoft.projectoxford.face.FaceServiceClient;
 import com.microsoft.projectoxford.face.contract.Face;
 import com.microsoft.projectoxford.face.contract.IdentifyResult;
+import com.microsoft.projectoxford.face.contract.LargePersonGroup;
+import com.microsoft.projectoxford.face.contract.PersonGroup;
 import com.microsoft.projectoxford.face.contract.TrainingStatus;
+import com.microsoft.projectoxford.face.rest.ClientException;
 import com.microsoft.projectoxford.face.samples.R;
 
 import java.io.BufferedOutputStream;
@@ -389,6 +392,26 @@ public class openFlirImageActivity extends AppCompatActivity {
         }
     }
 
+    private class GetLargePersonGroupTask extends AsyncTask<InputStream, String, LargePersonGroup[]> {
+
+        GetLargePersonGroupTask() {}
+
+        @Override
+        protected LargePersonGroup[] doInBackground(InputStream... params) {
+            FaceServiceClient faceServiceClient = SampleApp.getFaceServiceClient();
+            try {
+                LargePersonGroup[] largePersonGroups = faceServiceClient.listLargePersonGroups("",1000);
+                return largePersonGroups;
+            } catch (ClientException e) {
+                e.printStackTrace();
+                return null;
+            } catch (IOException e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+    }
+
     public static final String IMAGE_NAME = "flir_ir_image.jpg";
     private String thermalSDKversion;
     private static final String TAG = "openFlirImageActivity";
@@ -457,6 +480,10 @@ public class openFlirImageActivity extends AppCompatActivity {
         //ThermalImageFile thermalImageFile = openIncludedImage();
         //showFusionModes(thermalImageFile, irImageView, visualImageView);
         //showImageData(thermalImageFile,avgImageStateValue);
+    }
+
+    public void getJson(View view) {
+        new GetLargePersonGroupTask().execute();
     }
 
     public void managePersonGroups(View view) {

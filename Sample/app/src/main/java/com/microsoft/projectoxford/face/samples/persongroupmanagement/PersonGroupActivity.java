@@ -90,13 +90,19 @@ public class PersonGroupActivity extends AppCompatActivity {
             FaceServiceClient faceServiceClient = SampleApp.getFaceServiceClient();
             try{
                 publishProgress("Syncing with server to add person group...");
-
-                // Start creating person group in server.
-                faceServiceClient.createLargePersonGroup(
-                        params[0],
-                        getString(R.string.user_provided_person_group_name),
-                        getString(R.string.user_provided_person_group_description_data));
-
+                EditText editTextPersonGroupName = (EditText)findViewById(R.id.edit_person_group_name);
+                String newPersonGroupName = editTextPersonGroupName.getText().toString();
+                if (newPersonGroupName.equals("")) {
+                    setInfo("Person group name could not be empty");
+                }
+                else
+                {
+                    // Start creating person group in server.
+                    faceServiceClient.createLargePersonGroup(
+                            params[0],
+                            newPersonGroupName,
+                            getString(R.string.user_provided_person_group_description_data));
+                }
                 return params[0];
             } catch (Exception e) {
                 publishProgress(e.getMessage());
