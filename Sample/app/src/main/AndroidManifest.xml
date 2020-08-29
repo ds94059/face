@@ -189,7 +189,19 @@
             android:name=".ui.openFlirImageActivity"
             android:label="正能人臉辨識Beta"
             android:parentActivityName=".ui.openFlirImageActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity android:name=".ui.SettingPersonGroupActivity"
+            android:label="Person Groups Setting"
+            android:parentActivityName=".ui.SettingPersonGroupActivity"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity android:name=".ui.SelectPersonGroupActivity"
+            android:label= "Select Person Group"
+            android:parentActivityName=".ui.SelectPersonGroupActivity"
+            android:screenOrientation="portrait">
+        </activity>
+
     </application>
 
 </manifest>

@@ -203,6 +203,7 @@ public class openFlirImageActivity extends AppCompatActivity {
     String mPersonGroupId;
     boolean detected;
     PersonGroupListAdapter mPersonGroupListAdapter;
+    LargePersonGroup[] mLargePersonGroups;
 
     // Show the result on screen when detection is done.
     private void setUiAfterIdentification(IdentifyResult[] result, boolean succeed) {
@@ -401,6 +402,7 @@ public class openFlirImageActivity extends AppCompatActivity {
             FaceServiceClient faceServiceClient = SampleApp.getFaceServiceClient();
             try {
                 LargePersonGroup[] largePersonGroups = faceServiceClient.listLargePersonGroups("",1000);
+                mLargePersonGroups = largePersonGroups;
                 return largePersonGroups;
             } catch (ClientException e) {
                 e.printStackTrace();
@@ -443,6 +445,8 @@ public class openFlirImageActivity extends AppCompatActivity {
         mPersonGroupListAdapter = new openFlirImageActivity.PersonGroupListAdapter();
         listView.setAdapter(mPersonGroupListAdapter);
 
+        new GetLargePersonGroupTask().execute();
+
         ThermalLog.LogLevel enableLoggingInDebug = BuildConfig.DEBUG ? ThermalLog.LogLevel.DEBUG : ThermalLog.LogLevel.NONE;
         //ThermalSdkAndroid.init(..) has to be initiated from an Activity and before using ANY functionality from the FLIR Thermal SDK
         ThermalSdkAndroid.init(getApplicationContext(), enableLoggingInDebug);
@@ -476,14 +480,27 @@ public class openFlirImageActivity extends AppCompatActivity {
         } else {
             setPersonGroupSelected(-1);
         }
-
+        new GetLargePersonGroupTask().execute();
         //ThermalImageFile thermalImageFile = openIncludedImage();
         //showFusionModes(thermalImageFile, irImageView, visualImageView);
         //showImageData(thermalImageFile,avgImageStateValue);
     }
 
     public void getJson(View view) {
-        new GetLargePersonGroupTask().execute();
+        AlertDialog.Builder dialog = new AlertDialog.Builder(openFlirImageActivity.this);
+        dialog.setTitle("PersonGroups: ");
+        String temp = "";
+        for(int i=0;i<mLargePersonGroups.length;i++)
+        {
+            temp += "Group "+i + " groupname:" + mLargePersonGroups[i].name + "\n";
+        }
+        dialog.setMessage(temp);
+        dialog.show();
+    }
+
+    public void setting(View view) {
+        Intent intent = new Intent(this, SettingPersonGroupActivity.class);
+        startActivity(intent);
     }
 
     public void managePersonGroups(View view) {

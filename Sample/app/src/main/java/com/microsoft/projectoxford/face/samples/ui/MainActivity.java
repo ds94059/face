@@ -43,6 +43,9 @@ import android.view.View;
 import com.microsoft.projectoxford.face.samples.R;
 
 public class MainActivity extends AppCompatActivity {
+
+    static int personGroupPosition;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -89,11 +89,21 @@ public class PersonActivity extends AppCompatActivity {
                 publishProgress("Syncing with server to add person...");
                 addLog("Request: Creating Person in person group" + params[0]);
 
-                // Start the request to creating person.
-                CreatePersonResult createPersonResult = faceServiceClient.createPersonInLargePersonGroup(
-                        params[0],
-                        getString(R.string.user_provided_person_name),
-                        getString(R.string.user_provided_description_data));
+                EditText editTextPersonName = (EditText)findViewById(R.id.edit_person_name);
+                String newPersonName = editTextPersonName.getText().toString();
+                CreatePersonResult createPersonResult = new CreatePersonResult();
+                if (newPersonName.equals("")) {
+
+                }
+                else
+                {
+                    // Start the request to creating person.
+                    createPersonResult = faceServiceClient.createPersonInLargePersonGroup(
+                            params[0],
+                            newPersonName,
+                            getString(R.string.user_provided_description_data));
+                }
+
 
                 return createPersonResult.personId.toString();
             } catch (Exception e) {
