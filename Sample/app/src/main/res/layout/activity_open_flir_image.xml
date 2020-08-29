@@ -13,14 +13,6 @@
 <!--        android:text="@string/thermal_sdk_version" />-->
 
 
-    <ListView
-        android:id="@+id/list_person_groups_identify"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.35"
-        android:background="#E0E0E0"
-        android:verticalSpacing="@dimen/view_margin" />
-
     <LinearLayout
         android:id="@id/button_bar"
         android:layout_width="match_parent"

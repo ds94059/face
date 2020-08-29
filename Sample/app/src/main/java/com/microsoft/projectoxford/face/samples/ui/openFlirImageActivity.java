@@ -440,11 +440,6 @@ public class openFlirImageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_open_flir_image);
 
-        //initialize the personGroup
-        ListView listView = (ListView) findViewById(R.id.list_person_groups_identify);
-        mPersonGroupListAdapter = new openFlirImageActivity.PersonGroupListAdapter();
-        listView.setAdapter(mPersonGroupListAdapter);
-
         new GetLargePersonGroupTask().execute();
 
         ThermalLog.LogLevel enableLoggingInDebug = BuildConfig.DEBUG ? ThermalLog.LogLevel.DEBUG : ThermalLog.LogLevel.NONE;
@@ -465,21 +460,6 @@ public class openFlirImageActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        ListView listView = (ListView) findViewById(R.id.list_person_groups_identify);
-        //mPersonGroupListAdapter = new openFlirImageActivity.PersonGroupListAdapter();
-        //listView.setAdapter(mPersonGroupListAdapter);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                setPersonGroupSelected(position);
-            }
-        });
-
-        if (mPersonGroupListAdapter.personGroupIdList.size() != 0) {
-            setPersonGroupSelected(0);
-        } else {
-            setPersonGroupSelected(-1);
-        }
         new GetLargePersonGroupTask().execute();
         //ThermalImageFile thermalImageFile = openIncludedImage();
         //showFusionModes(thermalImageFile, irImageView, visualImageView);
@@ -501,38 +481,6 @@ public class openFlirImageActivity extends AppCompatActivity {
     public void setting(View view) {
         Intent intent = new Intent(this, SettingPersonGroupActivity.class);
         startActivity(intent);
-    }
-
-    public void managePersonGroups(View view) {
-        Intent intent = new Intent(this, PersonGroupListActivity.class);
-        startActivity(intent);
-
-        //refreshIdentifyButtonEnabledStatus();
-    }
-
-    void setPersonGroupSelected(int position) {
-        //TextView textView = (TextView) findViewById(R.id.text_person_group_selected);
-        if (position > 0) {
-            String personGroupIdSelected = mPersonGroupListAdapter.personGroupIdList.get(position);
-            mPersonGroupListAdapter.personGroupIdList.set(
-                    position, mPersonGroupListAdapter.personGroupIdList.get(0));
-            mPersonGroupListAdapter.personGroupIdList.set(0, personGroupIdSelected);
-            ListView listView = (ListView) findViewById(R.id.list_person_groups_identify);
-            listView.setAdapter(mPersonGroupListAdapter);
-            setPersonGroupSelected(0);
-        } else if (position < 0) {
-            //setIdentifyButtonEnabledStatus(false);
-            //textView.setTextColor(Color.RED);
-            //textView.setText(R.string.no_person_group_selected_for_identification_warning);
-        } else {
-            mPersonGroupId = mPersonGroupListAdapter.personGroupIdList.get(0);
-            String personGroupName = StorageHelper.getPersonGroupName(
-                    mPersonGroupId, openFlirImageActivity.this);
-            //refreshIdentifyButtonEnabledStatus();
-            //textView.setTextColor(Color.BLACK);
-            //textView.setText(String.format("Person group to use: %s", personGroupName));
-        }
-        //identify();
     }
 
 
