@@ -110,12 +110,12 @@
     <!-- openFlirImage -->
     <string name="thermal_sdk_version">Thermal SDK version %1$s </string>
     <string name="spot_value_text">Spot value, X:%1$d Y:%2$d state:%3$s value:%4$s unit:%5$s</string>
-    <string name="avg_value_text">%1$s %2$s°C %3$s</string>
+    <string name="avg_value_text">%1$s %2$s°C</string>
     <string name="stat_min_text">Image min values, state:%1$s value:%2$s unit:%3$s</string>
     <string name="stat_avg_text">Image avg values, state:%1$s value:%2$s unit:%3$s</string>
     <string name="stat_max_text">Image max values, state:%1$s value:%2$s unit:%3$s</string>
 
-
+    <string name="selected_group">"Selected Group: %1$s"</string>
 
 
 

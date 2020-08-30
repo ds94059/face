@@ -19,38 +19,53 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/select_image"
-            style="@style/ButtonStyle"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginEnd="@dimen/view_margin"
-            android:layout_marginRight="@dimen/view_margin"
-            android:layout_weight="1"
-            android:onClick="selectImage"
-            android:text="@string/select_image" />
-
-        <Button
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+            <Button
+                android:id="@+id/select_image"
+                style="@style/ButtonStyle"
+                android:layout_width="200dp"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="@dimen/view_margin"
+                android:layout_marginRight="@dimen/view_margin"
+                android:textColor="#000000"
+                android:background="@android:color/darker_gray"
+                android:onClick="selectImage"
+                android:text="@string/select_image" />
+        </LinearLayout>
+        <ImageButton
             android:id="@+id/setting"
-            style="@style/ButtonStyle"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginEnd="@dimen/view_margin"
-            android:layout_marginRight="@dimen/view_margin"
-            android:layout_weight="1"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:clickable="true"
+            android:layout_gravity="right"
             android:onClick="setting"
-            android:text="setting" />
-        <Button
-            android:id="@+id/getJson"
-            style="@style/ButtonStyle"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginEnd="@dimen/view_margin"
-            android:layout_marginRight="@dimen/view_margin"
-            android:layout_weight="1"
-            android:onClick="getJson"
-            android:text="Get Json" />
+            android:background="@raw/settingbutton" />
+
+
+<!--        <Button-->
+<!--            android:id="@+id/setting"-->
+<!--            style="@style/ButtonStyle"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:layout_marginEnd="@dimen/view_margin"-->
+<!--            android:layout_marginRight="@dimen/view_margin"-->
+<!--            android:layout_weight="1"-->
+<!--            android:onClick="setting"-->
+<!--            android:text="setting" />-->
+
+<!--        <Button-->
+<!--            android:id="@+id/getJson"-->
+<!--            style="@style/ButtonStyle"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:layout_marginEnd="@dimen/view_margin"-->
+<!--            android:layout_marginRight="@dimen/view_margin"-->
+<!--            android:layout_weight="1"-->
+<!--            android:onClick="getJson"-->
+<!--            android:text="Get Json" />-->
 
     </LinearLayout>
 
@@ -164,19 +179,21 @@
         android:background="#E0E0E0"
         android:verticalSpacing="@dimen/view_margin" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.1"
-        android:orientation="vertical">
-    <Button
-        android:id="@+id/go"
-        style="@style/ButtonStyle"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:onClick="identification"
-        android:text="GO" />
-    </LinearLayout>
+    <!--        下個頁面-->
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="0dp"-->
+<!--        android:layout_weight="0.1"-->
+<!--        android:orientation="vertical">-->
+
+<!--    <Button-->
+<!--        android:id="@+id/go"-->
+<!--        style="@style/ButtonStyle"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:onClick="identification"-->
+<!--        android:text="GO" />-->
+<!--    </LinearLayout>-->
 
 
 </LinearLayout>

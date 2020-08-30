@@ -320,7 +320,7 @@ public class openFlirImageActivity extends AppCompatActivity {
                             mIdentifyResults.get(position).candidates.get(0).confidence);
                     ((TextView) convertView.findViewById(R.id.text_detected_face)).setText(
                             identity);
-                    avgImageStateValue.setText(getString(R.string.avg_value_text,personName,avgTemp2bit,alive_text));
+                    avgImageStateValue.setText(getString(R.string.avg_value_text,personName,avgTemp2bit));
                 } else {
                     ((TextView) convertView.findViewById(R.id.text_detected_face)).setText(
                             R.string.face_cannot_be_identified);
@@ -463,7 +463,6 @@ public class openFlirImageActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
         new GetLargePersonGroupTask().execute();
 
         mPersonGroupListAdapter = new PersonGroupListAdapter();

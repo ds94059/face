@@ -17,14 +17,20 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".ui.MainActivity"
-            android:label="@string/app_name"
-            android:launchMode="singleTop"
+            android:name=".ui.openFlirImageActivity"
+            android:label="正能人臉辨識Beta"
             android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".ui.MainActivity"
+            android:label="@string/app_name"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" >
+
         </activity>
         <activity
             android:name=".ui.DetectionActivity"
@@ -185,12 +191,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.IdentificationActivity" />
         </activity>
-        <activity
-            android:name=".ui.openFlirImageActivity"
-            android:label="正能人臉辨識Beta"
-            android:parentActivityName=".ui.openFlirImageActivity"
-            android:screenOrientation="portrait" >
-        </activity>
+
         <activity android:name=".ui.SettingPersonGroupActivity"
             android:label="Person Groups Setting"
             android:parentActivityName=".ui.SettingPersonGroupActivity"

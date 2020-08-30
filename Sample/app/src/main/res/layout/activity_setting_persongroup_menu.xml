@@ -1,43 +1,61 @@
 <!-- Copyright (c) Microsoft. All rights reserved. -->
-
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context=".ui.SettingPersonGroupActivity">
+    android:baselineAligned="false"
+    android:orientation="vertical"
+    tools:context="com.microsoft.projectoxford.face.samples.ui.SettingPersonGroupActivity">
 
-    <LinearLayout
-        android:layout_width="match_parent"
+    <RelativeLayout android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
-        android:orientation="vertical" >
+        android:layout_weight="1">
+
+        <TextView
+            android:id="@+id/selected_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Selected Group:"
+            android:textColor="@android:color/black"
+            android:textSize="20dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true">
+
+        </TextView>
+        <Button
+            android:id="@+id/select_person_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Select\nPerson\nGroup"
+            android:textColor="#000000"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:background="@android:color/darker_gray"
+            android:onClick="selectPersonGroup"
+            style="@style/ButtonStyle" />
 
 
+    </RelativeLayout>
 
-            <Button
-                android:id="@+id/select_person_group"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:text="Select\nPerson\nGroup"
-                android:onClick="selectPersonGroup"
-                style="@style/ButtonStyle" />
-
-
+    <RelativeLayout android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
         <Button
             android:id="@+id/manage_person_groups"
             style="@style/ButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentLeft="true"
+            android:textColor="#000000"
+            android:background="@android:color/darker_gray"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
             android:onClick="managePersonGroup"
             android:text="@string/manage_person_groups" />
+    </RelativeLayout>
 
-    </LinearLayout>
+</LinearLayout>
 
-
-</RelativeLayout>
