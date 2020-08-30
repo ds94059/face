@@ -12,6 +12,7 @@ package com.microsoft.projectoxford.face.samples.ui;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Person;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -47,13 +48,16 @@ import com.microsoft.projectoxford.face.rest.ClientException;
 import com.microsoft.projectoxford.face.samples.R;
 
 import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.text.DecimalFormat;
 import java.util.UUID;
@@ -461,9 +465,13 @@ public class openFlirImageActivity extends AppCompatActivity {
         super.onResume();
 
         new GetLargePersonGroupTask().execute();
+
+        mPersonGroupListAdapter = new PersonGroupListAdapter();
+        mPersonGroupId = mPersonGroupListAdapter.personGroupIdList.get(MainActivity.personGroupPosition);
         //ThermalImageFile thermalImageFile = openIncludedImage();
         //showFusionModes(thermalImageFile, irImageView, visualImageView);
         //showImageData(thermalImageFile,avgImageStateValue);
+        Log.d("tag","pause");
     }
 
     public void getJson(View view) {
@@ -900,6 +908,27 @@ public class openFlirImageActivity extends AppCompatActivity {
     //@RequiresApi(api = Build.VERSION_CODES.O)
     public void identify() {
        // Log.d("response time before",java.time.LocalTime.now().toString());
+
+        // 讀取選擇的group ID
+        File fileDir = getFilesDir();
+        BufferedReader reader = null;
+        try {
+            reader = new BufferedReader(new InputStreamReader(new FileInputStream(fileDir + "/selectedGroup.txt"), "UTF-8")); // 指定讀取文件的編碼格式，以免出現中文亂碼
+            String str = null;
+            while ((str = reader.readLine()) != null) {
+                mPersonGroupId = str;
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                reader.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
 
         if(alive_text=="不是活人")
             avgImageStateValue.setText("Error");

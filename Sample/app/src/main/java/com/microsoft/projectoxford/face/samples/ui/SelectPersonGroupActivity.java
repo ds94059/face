@@ -51,6 +51,18 @@ import com.microsoft.projectoxford.face.samples.R;
 import com.microsoft.projectoxford.face.samples.helper.StorageHelper;
 import com.microsoft.projectoxford.face.samples.persongroupmanagement.PersonGroupListActivity;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.security.acl.Group;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -91,6 +103,26 @@ public class SelectPersonGroupActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 MainActivity.personGroupPosition=position;
                 setPersonGroupSelected(position);
+                String GroupID = mPersonGroupListAdapter.personGroupIdList.get(0);
+                BufferedWriter fw = null;
+                try {
+                    File fileDir = getFilesDir();
+                    File file = new File(fileDir,"selectedGroup.txt");
+                    fw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file, false), "UTF-8")); // append: false 為覆蓋寫入
+                    fw.append(GroupID);
+                    fw.newLine();
+                    fw.flush(); // 全部寫入緩存中的內容
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } finally {
+                    if (fw != null) {
+                        try {
+                            fw.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
             }
         });
 
